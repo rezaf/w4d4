@@ -1,4 +1,7 @@
 MusicApp::Application.routes.draw do
-  resources :session, only:[:create, :new, :destroy]
+  resource :session, only: :create, as: :session
+  resources :session, only:[:new, :destroy]
   resources :users, only:[:create, :new]
+  
+  root to: 'users#new'
 end
