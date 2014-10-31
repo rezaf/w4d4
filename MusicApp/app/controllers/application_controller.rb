@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
   
   def log_in_user!(user)
-    session[:session_token] = generate_session_token!
+    session[:session_token] = @user.class.generate_session_token!
   end
   
   def log_out_user!
@@ -21,6 +21,14 @@ class ApplicationController < ActionController::Base
   end
   
   def logged_in?
-    current_user.present?
+    !current_user.nil?
+  end
+  
+  def require_no_user!
+    redirect_to users_url unless current_user.nil?
+  end
+  
+  def require_user!
+    redirect_to new_session_url if current_user.nil?
   end
 end

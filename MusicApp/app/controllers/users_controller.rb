@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   
+  before_action :require_no_user!
+  
   def user_params
     params.require(:user).permit(:email, :password)
   end
@@ -12,10 +14,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      login.user(@user)
+      log_in_user!(@user)
       redirect_to user_url
     else
-      flash.now[:errors] = @users.errors.full_messages
+      flash.now[:errors] = @user.errors.full_messages
       render :new
     end
   end
